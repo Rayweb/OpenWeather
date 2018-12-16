@@ -1,0 +1,27 @@
+package com.finleap.weather.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+
+import com.finleap.weather.owp.dtos.WeatherForecast;
+
+@Service
+public class OpenWeatherMapService implements WeatherService {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
+	@Value("${openweathermap.appId}")
+	private String appId;
+
+	@Value("${openweathermap.city.url}")
+	private String cityUrl;
+	
+	@Override
+	public WeatherForecast getWeatherForecastByCity(String city) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

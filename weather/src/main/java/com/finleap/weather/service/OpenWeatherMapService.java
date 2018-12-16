@@ -1,0 +1,67 @@
+package com.finleap.weather.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.finleap.weather.exception.CityNotFoundException;
+import com.finleap.weather.owp.dtos.WeatherAverages;
+import com.finleap.weather.owp.dtos.WeatherDetails;
+import com.finleap.weather.owp.dtos.WeatherForecast;
+import com.finleap.weather.util.WeatherAverageCalculator;
+
+@Service
+public class OpenWeatherMapService implements WeatherService {
+
+	@Autowired
+	RestTemplate template;
+
+	@Autowired
+	WeatherAverageCalculator calculator;
+
+	@Value("${openweathermap.appId}")
+	private String appId;
+
+	@Value("${openweathermap.url}")
+	private String owmUrl;
+
+	@Override
+	public WeatherAverages getWeatherForecastByCity(String city) throws CityNotFoundException {
+		WeatherForecast weatherForecast = new WeatherForecast();
+		String owmForecastCityUrl = getForecastUrlForCity(city);
+		try {
+			weatherForecast = template.getForObject(owmForecastCityUrl, WeatherForecast.class);
+		} catch (HttpClientErrorException ex) {
+			if (ex.getStatusCode() == HttpStatus.NOT_FOUND) {
+				throw new CityNotFoundException(city + " not Found");
+			}
+		}
+
+		WeatherAverages weatherAverages = new WeatherAverages();
+		List<WeatherDetails> weatherDetails = weatherForecast.getList();
+		weatherAverages.setDailyAverageTemperature(
+				formatValue(calculator.getDailyAveragetemperature(weatherDetails)));
+		weatherAverages.setNightlyAverageTemperature(
+				formatValue(calculator.getNightlyAveragetemperature(weatherDetails)));
+		weatherAverages.setPressureAverage(
+				formatValue(calculator.getPressureAverage(weatherDetails)));
+		return weatherAverages;
+	}
+
+	private String getForecastUrlForCity(String city) {
+
+		UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(owmUrl).queryParam("q", city)
+				.queryParam("appId", appId).queryParam("units", "metric");
+		return builder.toUriString();
+	}
+
+	public double formatValue(double doubletoFormat) {
+		return Math.round(doubletoFormat * 100) / 100D;
+	}
+}

@@ -1,0 +1,5 @@
+package com.finleap.weather.service;
+
+public class OpenWeatherMapService {
+
+}

@@ -1,0 +1,43 @@
+package com.finleap.weather.util;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.finleap.weather.owp.dtos.Main;
+import com.finleap.weather.owp.dtos.WeatherDetails;
+
+public class WeatherTestsHelper {
+
+	public static List<WeatherDetails> getDailyWeatherDetails() {
+		List<WeatherDetails> list = new ArrayList<>();
+
+		WeatherDetails wd1 = new WeatherDetails();
+		wd1.setDt(Instant.parse("2018-12-15T06:00:00Z"));
+		Main main1 = new Main();
+		main1.setTemp(10.00);
+		main1.setPressure(100.00);
+		wd1.setMain(main1);
+		list.add(wd1);
+
+		WeatherDetails wd2 = new WeatherDetails();
+		wd1.setDt(Instant.parse("2018-12-15T09:00:00Z"));
+		Main main2 = new Main();
+		main2.setTemp(6.00);
+		main2.setPressure(120.00);
+		wd2.setMain(main2);
+		list.add(wd2);
+		
+		//Should not be taken into consideration as is not a day time value
+		WeatherDetails wd3 = new WeatherDetails();
+		wd3.setDt(Instant.parse("2018-12-15T21:00:00Z"));
+		Main main3 = new Main();
+		main3.setTemp(2.00);
+		main3.setPressure(150.00);
+		wd3.setMain(main3);
+		list.add(wd3);
+		
+		return list;
+	}
+}

@@ -1,0 +1,9 @@
+package com.rayweb.template.service;
+
+import com.rayweb.template.domain.WeatherForecast;
+
+import reactor.core.publisher.Mono;
+
+public interface WeatherService {
+	public Mono<WeatherForecast> getWeatherForecastByCity(String city);
+}

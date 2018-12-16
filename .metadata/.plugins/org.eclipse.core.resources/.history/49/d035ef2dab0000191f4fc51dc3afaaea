@@ -1,0 +1,44 @@
+package com.finleap.weather.util;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import com.finleap.weather.owp.dtos.WeatherDetails;
+
+@Component
+public class WeatherAverageCalculator {
+
+	public List<WeatherDetails> getWeatherDetailsForRequestedDays(List<WeatherDetails> totalWeatherDetails) {
+		return totalWeatherDetails.stream()
+				.filter(twd -> isDateInRange(twd.dt))
+				.peek(twd -> System.out.println(twd.dt_txt))
+				.collect(Collectors.toList());
+	}
+
+	public double getDailyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+
+	public double getNightlyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+
+	public double getPressureAverage(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+
+	public boolean isDateInRange(Instant dt) {
+		Instant today = Instant.now();
+		LocalDateTime dtForecast = LocalDateTime.ofInstant(dt, ZoneOffset.UTC);
+		LocalDateTime ldtLimit = LocalDateTime.ofInstant(today, ZoneOffset.UTC);
+		ldtLimit = ldtLimit.plus(4, ChronoUnit.DAYS);
+		return dtForecast.getDayOfYear() < ldtLimit.getDayOfYear();
+	}
+}

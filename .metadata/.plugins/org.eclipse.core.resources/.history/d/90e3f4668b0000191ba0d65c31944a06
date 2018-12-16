@@ -1,0 +1,45 @@
+package com.finleap.weather.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.finleap.weather.owp.dtos.WeatherForecast;
+
+@Service
+public class OpenWeatherMapService implements WeatherService {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	RestTemplate template;
+	
+	@Value("${openweathermap.appId}")
+	private String appId;
+
+	@Value("${openweathermap.url}")
+	private String owmUrl;
+	
+	@Override
+	public WeatherForecast getWeatherForecastByCity(String city) {
+	
+		UriComponentsBuilder builder = getOwmUrl(city);
+
+		WeatherForecast response = template.getForObject(builder.toUriString(), WeatherForecast.class);
+		return response;
+	}
+
+	private String getOwmUrl(String city) {
+		UriComponentsBuilder builder = UriComponentsBuilder
+		    .fromUriString(owmUrl)
+		    .queryParam("q", city)
+		    .queryParam("appId",appId)
+		    .queryParam("units", "metric");
+		return builder.toUriString();
+	}
+
+}

@@ -1,0 +1,5 @@
+package com.finleap.weather.owp.dtos;
+
+public class WeatherAverages {
+
+}

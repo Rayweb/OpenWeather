@@ -1,0 +1,32 @@
+package com.finleap.weather.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.finleap.weather.exception.CityNotFoundException;
+import com.finleap.weather.owp.dtos.Greet;
+import com.finleap.weather.owp.dtos.WeatherAverages;
+import com.finleap.weather.service.OpenWeatherMapService;
+
+@RestController
+@Validated
+public class WeatherController {
+
+	@Autowired
+	private OpenWeatherMapService weatherService;
+
+	@RequestMapping(value = "/v1.0/data", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public @ResponseBody WeatherAverages data(@RequestParam("city") String city) throws CityNotFoundException {
+		return weatherService.getWeatherForecastByCity(city);
+	}
+
+}

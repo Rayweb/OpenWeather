@@ -1,0 +1,26 @@
+package com.finleap.weather.util;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.finleap.weather.owp.dtos.WeatherDetails;
+
+public class WeatherAverageCalculator {
+	
+	public List<WeatherDetails> getWeatherDetailsForRequestedDays(List<WeatherDetails> totalWeatherDetails,int requestedDays){
+		List<WeatherDetails> filteredWeatherDetails = new ArrayList<WeatherDetails>();
+		return filteredWeatherDetails;
+	}
+
+	public double getDailyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+	
+	public double getNightlyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+	
+	public double getPressureAverage(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+}

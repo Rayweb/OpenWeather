@@ -1,0 +1,2 @@
+openweathermap.appId=1f2b3a80decf99c0521e866eba05e5c9
+openweathermap.city.url=https://api.openweathermap.org/data/2.5/forecast?q=

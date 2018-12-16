@@ -1,0 +1,7 @@
+package com.finleap.weather.service;
+
+import com.finleap.weather.owp.dtos.WeatherForecast;
+
+public interface WeatherService {
+	public WeatherForecast getWeatherForecastByCity(String city);
+}

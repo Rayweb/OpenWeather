@@ -1,0 +1,39 @@
+package com.finleap.weather.util;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Component;
+
+import com.finleap.weather.owp.dtos.WeatherDetails;
+
+@Component
+public class WeatherAverageCalculator {
+	
+	public List<WeatherDetails> getWeatherDetailsForRequestedDays(List<WeatherDetails> totalWeatherDetails,int requestedDays){
+		return totalWeatherDetails.stream()
+				.filter(twd -> isInDateRange(twd.dt))
+				.collect(Collectors.toList());
+	}
+
+	public double getDailyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+	
+	public double getNightlyAveragetemperature(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+	
+	public double getPressureAverage(List<WeatherDetails> weatherDetails) {
+		return 0;
+	}
+	
+	public boolean isInDateRange(Instant dt) {
+		LocalDateTime ldt = LocalDateTime.ofInstant(dt, ZoneOffset.UTC);
+		LocalDateTime dataRange = LocalDateTime.now().plusDays(3);
+		return ldt.compareTo(dataRange) <= 0;
+	}
+}

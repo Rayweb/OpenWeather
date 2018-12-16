@@ -1,0 +1,30 @@
+package com.finleap.weather.util;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.finleap.weather.owp.dtos.WeatherDetails;
+
+public class WeatherAverageCalculatorTests {
+
+	@Autowired
+	private WeatherAverageCalculator calculator;
+
+	@Before
+	void setUp() {
+		calculator = new WeatherAverageCalculator();
+	}
+	
+	@Test
+	public void  getDailyStatistics() {
+        List<WeatherDetails> weatherDetails = WeatherTestsHelper.getDailyWeatherDetails();
+        double result = calculator.getDailyAveragetemperature(weatherDetails);
+        assertEquals("The Daily wheater Average is Correct", 8.00, result, 0);
+    }
+
+}
